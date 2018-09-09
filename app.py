@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Aug 29 18:14:54 2018
+
+@author: sagar
+"""
+from flask import Flask, render_template, redirect, url_for, request
+
+from student import Student
+
+students=[]
+
+app = Flask (__name__)
+
+@app.route("/", methods = ["GET","POST"])
+
+def student_page():
+   if request.method == "POST":
+        new_student_id=request.form.get("student_id ", "")
+        new_student_name=request.form.get("student_name","")
+
+        new_student=Student(name = new_student_name, student_id = new_student_id)
+        students.append(new_student)
+
+        return redirect(url_for("student_page"))
+
+   return render_template("index.html", name = students)
+
+
+
+if __name__=="__main__":
+    app.run(debug=True)
